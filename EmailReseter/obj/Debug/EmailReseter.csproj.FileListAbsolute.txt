@@ -1,0 +1,15 @@
+c:\users\mauguzun\documents\visual studio 2015\Projects\EmailReseter\EmailReseter\bin\Debug\EmailReseter.exe.config
+C:\Users\mauguzun\Documents\Visual Studio 2015\Projects\EmailReseter\EmailReseter\bin\Debug\EmailReseter.exe
+C:\Users\mauguzun\Documents\Visual Studio 2015\Projects\EmailReseter\EmailReseter\bin\Debug\EmailReseter.pdb
+C:\Users\mauguzun\Documents\Visual Studio 2015\Projects\EmailReseter\EmailReseter\obj\Debug\EmailReseter.csprojResolveAssemblyReference.cache
+C:\Users\mauguzun\Documents\Visual Studio 2015\Projects\EmailReseter\EmailReseter\obj\Debug\EmailReseter.Form1.resources
+C:\Users\mauguzun\Documents\Visual Studio 2015\Projects\EmailReseter\EmailReseter\obj\Debug\EmailReseter.Properties.Resources.resources
+C:\Users\mauguzun\Documents\Visual Studio 2015\Projects\EmailReseter\EmailReseter\obj\Debug\EmailReseter.csproj.GenerateResource.Cache
+C:\Users\mauguzun\Documents\Visual Studio 2015\Projects\EmailReseter\EmailReseter\obj\Debug\EmailReseter.exe
+C:\Users\mauguzun\Documents\Visual Studio 2015\Projects\EmailReseter\EmailReseter\obj\Debug\EmailReseter.pdb
+C:\Users\mauguzun\Documents\Visual Studio 2015\Projects\EmailReseter\EmailReseter\bin\Debug\WebDriver.dll
+C:\Users\mauguzun\Documents\Visual Studio 2015\Projects\EmailReseter\EmailReseter\bin\Debug\WebDriver.xml
+C:\Users\mauguzun\Documents\Visual Studio 2015\Projects\EmailReseter\EmailReseter\bin\Debug\EAGetMail.dll
+C:\Users\mauguzun\Documents\Visual Studio 2015\Projects\EmailReseter\EmailReseter\bin\Debug\HtmlAgilityPack.dll
+C:\Users\mauguzun\Documents\Visual Studio 2015\Projects\EmailReseter\EmailReseter\bin\Debug\HtmlAgilityPack.pdb
+C:\Users\mauguzun\Documents\Visual Studio 2015\Projects\EmailReseter\EmailReseter\bin\Debug\HtmlAgilityPack.xml
