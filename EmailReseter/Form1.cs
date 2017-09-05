@@ -1,17 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using System.IO;
 using EAGetMail;
+using OpenQA.Selenium.PhantomJS;
+using OpenQA.Selenium.Remote;
 
 namespace EmailReseter
 {
@@ -24,6 +22,9 @@ namespace EmailReseter
         private string _base = "source_all_account.txt";
         private string _num = "___num.txt";
         private string _res;
+
+        static public string gmailpassword;
+
 
         public Form1()
         {
@@ -51,7 +52,9 @@ namespace EmailReseter
             if (acc == null)
                 return;
 
-            myCons.Text = "start read email ,boss :)";
+            myCons.Text = "gmail " + Form1.gmailpassword;
+
+            myCons.Text += "start read email ,boss :)";
 
             Parallel.For(0, acc.Count, new ParallelOptions { MaxDegreeOfParallelism = 5 },    Read );
 
@@ -77,7 +80,11 @@ namespace EmailReseter
 
             myCons.Text = "load data" + Environment.NewLine;
             var loadAcc = new LoadAccount() { Path = this.Path };
-            acc = loadAcc.GetAccountList(Path + '/' + _blaster,Path + '/' + _base);
+            acc = loadAcc.GetAccountList(Path + '/' + _blaster,Path + '/' + _base,Path);
+            if (acc == null)
+            {
+                MessageBox.Show("dont find gmail  password");
+            }
 
             dataGridView.DataSource = acc;
             dataGridView.Columns[2].Visible = false;
@@ -99,18 +106,27 @@ namespace EmailReseter
             }
                 
         }
-
+        private static PhantomJSDriverService _GetJsSettings()
+        {
+            var serviceJs = PhantomJSDriverService.CreateDefaultService();
+            serviceJs.HideCommandPromptWindow = true;
+            return serviceJs;
+        }
         public void Read(int x)
         {
 
             Account account = acc[x];
             string pass = (new Settings().GetEmailPassword(account.Email) == null) ? account.EmailPassword : new Settings().GetEmailPassword(account.Email);
 
-            MailServer oServer = new MailServer(new Settings().GetEmailHost(account.Email), account.Email, pass, ServerProtocol.Pop3);
+
+            var serverproto = (account.Email.Contains("@gmail.com")) ? ServerProtocol.Imap4 : ServerProtocol.Pop3;
+           
+
+            MailServer oServer = new MailServer(new Settings().GetEmailHost(account.Email), account.Email, pass, serverproto);
             MailClient oClient = new MailClient("TryIt");
             // Please add the following codes:
             oServer.SSLConnection = true;
-            oServer.Port = 995;
+            oServer.Port = (account.Email.Contains("@gmail.com")) ? 993: 995;
             account.Time = DateTime.Now;
             try
             {
@@ -126,17 +142,41 @@ namespace EmailReseter
                     if ((DateTime.Today - oMail.SentDate).TotalHours > 12)
                         continue;
 
+                    var subj = oMail.Subject;
+                    var rep = oMail.To[0].Address;
+
+                    if (account.Email.Contains("@gmail.com"))
+                    {
+                        if (account.Email != rep)
+                        {
+                            continue;
+                        }
+                    }
+
                     //false
                     if (oMail.From.Address.ToString().Contains("ohno"))
                         resetEmailUrl = new GetLink().FindLink(oMail.HtmlBody);
                     else if (oMail.Subject.Contains("reset"))
                         resetEmailUrl = new GetLink().FindLink(oMail.HtmlBody);
+                    else if (oMail.From.Address.Contains("suspicious") || oMail.From.Address.Contains("Get back on Pinterest") || oMail.From.Address.Contains("confirm") || oMail.From.Address.Contains("reactivate"))
+                    {
+                        var sibe = oMail.Subject;
+                        resetEmailUrl = new GetLink().FindLink(oMail.HtmlBody);
+                    }
 
                     if (resetEmailUrl != null)
                     {
-                        var driver = new ChromeDriver();
+                        RemoteWebDriver driver;
+
+                        if (toolStripComboBoxDriver.Selected.ToString() == "Chrome")
+                            driver = new ChromeDriver();
+                        else
+                            driver = new PhantomJSDriver(_GetJsSettings());
+
                         try
                         {
+                           
+
                             driver.Navigate().GoToUrl(resetEmailUrl);
                             Thread.Sleep(5000);
                             string tempPassword = GetPassword();
@@ -147,13 +187,16 @@ namespace EmailReseter
                             Thread.Sleep(7000);
 
                             File.AppendAllText(this._res + '/' + "good.txt", account.Email + ':' + account.PinPassword + Environment.NewLine);
+                            driver.Quit();
                         }
                         catch (Exception ex)
                         {
                             SetPassWordMinusOne();
+
                         }
                         finally
                         {
+                           
                             driver.Quit();
                         }
 
@@ -177,7 +220,7 @@ namespace EmailReseter
             {
                 try
                 {
-                    File.AppendAllText(this._res + System.IO.Path.DirectorySeparatorChar + "total_bad.txt", account.Email + Environment.NewLine);
+                    File.AppendAllText(this._res + System.IO.Path.DirectorySeparatorChar + "total_bad.txt", account.Email + ep.Message + Environment.NewLine);
                     account.Status = ep.Message;
                 }
                 catch { }
@@ -213,6 +256,17 @@ namespace EmailReseter
                     Mail oMail = oClient.GetMail(info);
                     if ((DateTime.Today - oMail.SentDate).TotalHours > 12)
                         continue;
+
+                    var subj = oMail.Subject;
+                    var rep = oMail.To[0].Address;
+
+                    if (acc.Email.Contains("@gmail.com"))
+                    {
+                        if (acc.Email != rep)
+                        {
+                            continue;
+                        }
+                    }
 
                     //false
                     if (oMail.From.Address.ToString().Contains("ohno"))
@@ -370,6 +424,42 @@ namespace EmailReseter
                 myCons.Text = ex.Message;
             }
            
+        }
+
+        private void updateGoodToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+           
+            string [] good = File.ReadAllLines(this.Path + @"/res/good.txt");
+            List<Account> goodAcc = new List<Account>();
+            foreach(string line in good)
+            {
+                string[] lineArr = line.Split(':');
+                goodAcc.Add(new Account() { Email = lineArr[0], PinPassword = lineArr[1] });
+            }
+
+            acc = new LoadAccount().GetAccountList(Path + '/' + _blaster, Path + '/' + _base ,Path);
+            if (acc == null)
+            {
+                MessageBox.Show("dont find gmail  password");
+            }
+
+
+            for (int i = 0; i < acc.Count(); i++)
+            {
+                var query = from g in goodAcc
+                            where g.Email == acc[i].Email
+                            select g.PinPassword;
+
+                if (query.Count() > 0)
+                {
+                    acc[i].PinPassword = query.FirstOrDefault();
+                }
+            }
+
+
+            
+           
+            this.Update();
         }
     }
 }

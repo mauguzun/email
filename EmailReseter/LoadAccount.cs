@@ -11,10 +11,18 @@ namespace EmailReseter
     {
          public string Path { get; set; }
 
-        public List<Account> GetAccountList(string @blasters,string @base)
+        public List<Account> GetAccountList(string @blasters,string @base,string @path)
         {
            
             Dictionary<string, Account> acc = new Dictionary<string, Account>();
+            try
+            {
+                string gmailpasss = File.ReadAllText(@path + "/" + "gmail.txt").Trim();
+                Form1.gmailpassword = gmailpasss;
+            }
+            catch
+            { return null; }
+
 
             string[] blaster = File.ReadAllLines(@blasters);
             foreach (string line in blaster)
@@ -31,16 +39,19 @@ namespace EmailReseter
                 }
 
             }
+
+           
             string[] _base = File.ReadAllLines(@base);
             foreach (string line in _base)
             {
                 string[] blParam = line.Split(':');
-                if (acc.Keys.Contains(blParam[0]))
+
+                 if(acc.Keys.Contains(blParam[0]))
                     acc[blParam[0]].EmailPassword = blParam[1];
             }
             return acc.Values.ToList();
 
-
+           
         }
 
     }

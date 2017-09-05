@@ -34,6 +34,8 @@
             this.updateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.pathTxt = new System.Windows.Forms.ToolStripTextBox();
             this.setPathToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripComboBoxDriver = new System.Windows.Forms.ToolStripComboBox();
+            this.updateGoodToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.dataGridView = new System.Windows.Forms.DataGridView();
             this.myCons = new System.Windows.Forms.RichTextBox();
@@ -52,10 +54,12 @@
             this.loadToolStripMenuItem,
             this.updateToolStripMenuItem,
             this.pathTxt,
-            this.setPathToolStripMenuItem});
+            this.setPathToolStripMenuItem,
+            this.toolStripComboBoxDriver,
+            this.updateGoodToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(411, 27);
+            this.menuStrip1.Size = new System.Drawing.Size(738, 27);
             this.menuStrip1.TabIndex = 1;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -70,7 +74,7 @@
             // loadToolStripMenuItem
             // 
             this.loadToolStripMenuItem.Name = "loadToolStripMenuItem";
-            this.loadToolStripMenuItem.Size = new System.Drawing.Size(45, 23);
+            this.loadToolStripMenuItem.Size = new System.Drawing.Size(94, 23);
             this.loadToolStripMenuItem.Text = "Load";
             this.loadToolStripMenuItem.Click += new System.EventHandler(this.loadToolStripMenuItem_Click);
             // 
@@ -94,6 +98,21 @@
             this.setPathToolStripMenuItem.Text = "SetPath";
             this.setPathToolStripMenuItem.Click += new System.EventHandler(this.setPathToolStripMenuItem_Click);
             // 
+            // toolStripComboBoxDriver
+            // 
+            this.toolStripComboBoxDriver.Items.AddRange(new object[] {
+            "Phantom",
+            "Chrome"});
+            this.toolStripComboBoxDriver.Name = "toolStripComboBoxDriver";
+            this.toolStripComboBoxDriver.Size = new System.Drawing.Size(121, 23);
+            // 
+            // updateGoodToolStripMenuItem
+            // 
+            this.updateGoodToolStripMenuItem.Name = "updateGoodToolStripMenuItem";
+            this.updateGoodToolStripMenuItem.Size = new System.Drawing.Size(89, 23);
+            this.updateGoodToolStripMenuItem.Text = "Update Good";
+            this.updateGoodToolStripMenuItem.Click += new System.EventHandler(this.updateGoodToolStripMenuItem_Click);
+            // 
             // splitContainer1
             // 
             this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -111,7 +130,7 @@
             this.splitContainer1.Panel2.Controls.Add(this.myCons);
             this.splitContainer1.Panel2.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.splitContainer1.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.splitContainer1.Size = new System.Drawing.Size(411, 263);
+            this.splitContainer1.Size = new System.Drawing.Size(738, 263);
             this.splitContainer1.SplitterDistance = 174;
             this.splitContainer1.TabIndex = 2;
             // 
@@ -123,7 +142,7 @@
             this.dataGridView.Location = new System.Drawing.Point(0, 0);
             this.dataGridView.Name = "dataGridView";
             this.dataGridView.RowHeadersVisible = false;
-            this.dataGridView.Size = new System.Drawing.Size(411, 174);
+            this.dataGridView.Size = new System.Drawing.Size(738, 174);
             this.dataGridView.TabIndex = 0;
             this.dataGridView.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView_CellDoubleClick);
             // 
@@ -135,7 +154,7 @@
             this.myCons.ForeColor = System.Drawing.Color.Lime;
             this.myCons.Location = new System.Drawing.Point(0, 0);
             this.myCons.Name = "myCons";
-            this.myCons.Size = new System.Drawing.Size(411, 85);
+            this.myCons.Size = new System.Drawing.Size(738, 85);
             this.myCons.TabIndex = 0;
             this.myCons.Text = "";
             this.myCons.TextChanged += new System.EventHandler(this.myCons_TextChanged);
@@ -144,7 +163,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(411, 290);
+            this.ClientSize = new System.Drawing.Size(738, 290);
             this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
@@ -173,6 +192,8 @@
         private System.Windows.Forms.RichTextBox myCons;
         private System.Windows.Forms.ToolStripTextBox pathTxt;
         private System.Windows.Forms.ToolStripMenuItem setPathToolStripMenuItem;
+        private System.Windows.Forms.ToolStripComboBox toolStripComboBoxDriver;
+        private System.Windows.Forms.ToolStripMenuItem updateGoodToolStripMenuItem;
     }
 }
 

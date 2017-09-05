@@ -14,6 +14,8 @@ namespace EmailReseter
         public string EmailPassword { get; set; }
         public string PinPassword { get; set; }
         public string Status { get; set; }
+
+
         public DateTime Time { get; set; }
     }
 }

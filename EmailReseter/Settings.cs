@@ -10,15 +10,21 @@ namespace EmailReseter
     {
         public string GetEmailPassword(string email)
         {
-            if (email.Contains("@brauksimkopa.lv"))
+            if (email.Contains("@brauksimkopa.lv") || email.Contains("@antikvar.lv"))
                 return "De171717!";
+            if (email.Contains("@gmail.com"))
+                return Form1.gmailpassword;
             else
                 return null;
         }
         public string GetEmailHost(string host)
         {
+
+
             if (host.Contains("@mail.ru"))
                 return "pop.mail.ru";
+            else if (host.Contains("@gmail.com"))
+                return "imap.gmail.com";
             else if (host.Contains("@bk.ru"))
                 return "pop.bk.ru";
             else if (host.Contains("@inbox.ru"))

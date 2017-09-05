@@ -15,7 +15,7 @@ namespace EmailReseter
         {
             var fromAddress = new MailAddress("mauguzun@gmail.com", "Deniss");
             var toAddress = new MailAddress("mauguzun@gmail.com", "Deniss");
-            const string fromPassword = "Askdt333!";
+             string fromPassword = Form1.gmailpassword;
             
             var smtp = new SmtpClient()
             {
