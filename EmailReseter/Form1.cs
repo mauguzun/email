@@ -23,7 +23,12 @@ namespace EmailReseter
         private string _num = "___num.txt";
         private string _res;
 
+        static public int count = 0;
+
         static public string gmailpassword;
+
+
+        static List<Gmail> _gmails;
 
 
         public Form1()
@@ -37,6 +42,7 @@ namespace EmailReseter
         {
             this.Path = pathTxt.Text.Trim();
 
+            _gmails = new List<Gmail>();
            
             if (!Directory.Exists(Path + System.IO.Path.DirectorySeparatorChar + "res"))
                 Directory.CreateDirectory(Path + System.IO.Path.DirectorySeparatorChar + "res");
@@ -56,7 +62,7 @@ namespace EmailReseter
 
             myCons.Text += "start read email ,boss :)";
 
-            Parallel.For(0, acc.Count, new ParallelOptions { MaxDegreeOfParallelism = 5 },    Read );
+            Parallel.For(0, acc.Count, new ParallelOptions { MaxDegreeOfParallelism = 10 },    Read );
 
             //for (int i = 0; i < acc.Count; i++)
             //{
@@ -115,6 +121,9 @@ namespace EmailReseter
         public void Read(int x)
         {
 
+            count++;
+            this.Text = count.ToString();
+
             Account account = acc[x];
             string pass = (new Settings().GetEmailPassword(account.Email) == null) ? account.EmailPassword : new Settings().GetEmailPassword(account.Email);
 
@@ -133,12 +142,67 @@ namespace EmailReseter
                 oClient.Connect(oServer);
                 MailInfo[] infos = oClient.GetMailInfos();
                 infos = infos.Reverse().ToArray();
-                for (int i = 0; i < 25; i++)
+
+                /////////////// here :) just read all 
+
+                int gmailCount = 25;
+                List<Gmail> filteredList = null;
+                if (account.Email.Contains("@gmail.com"))
+                {
+                    // 
+                    string clearEmail = account.Email.Replace(".", "");
+                    gmailCount = _gmails.Where(ee => ee.ClearEmail == clearEmail).Count();
+                    if (gmailCount < 1)
+                    {
+                        for (int i = 0; i < infos.Length; i++)
+                        {
+                            MailInfo info = infos[i];
+                            Mail oMail = oClient.GetMail(info);
+
+                            _gmails.Add(new Gmail()
+                            {
+                                ClearEmail = clearEmail,
+                                RealEmail = oMail.To[0].Address,
+                                Body = oMail.HtmlBody,
+                                Date = oMail.SentDate,
+                                Header = oMail.Subject,
+                                Eagtmail = oMail,
+                                
+                            });
+                        }
+                        
+                    }
+
+
+                   filteredList = _gmails.Where(ee => ee.RealEmail == account.Email).ToList();
+
+
+                 
+
+
+                }
+                
+
+                for (int i = 0; i < gmailCount; i++)
                 {
 
                     string resetEmailUrl = null;
+
                     MailInfo info = infos[i];
-                    Mail oMail = oClient.GetMail(info);
+                    Mail oMail;
+                    if (account.Email.Contains("@gmail.com"))
+                    {
+                        oMail = filteredList[i].Eagtmail;
+                    }
+                    else
+                    {
+                        
+                        oMail = oClient.GetMail(info);
+                    }
+
+                    
+
+
                     if ((DateTime.Today - oMail.SentDate).TotalHours > 12)
                         continue;
 

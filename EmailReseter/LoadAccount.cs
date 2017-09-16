@@ -35,7 +35,7 @@ namespace EmailReseter
                 }
                 else
                 {
-                    File.AppendAllText(this.Path +"/" + "!miseedEmail.txt", line + Environment.NewLine);
+                  //  File.AppendAllText(this.Path +"/" + "!miseedEmail.txt", line + Environment.NewLine);
                 }
 
             }
