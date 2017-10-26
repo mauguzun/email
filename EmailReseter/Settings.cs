@@ -34,7 +34,7 @@ namespace EmailReseter
             else if (host.Contains("internet-veikals.lv"))
                 return "mail.internet-veikals.lv";
             else if (host.Contains("brauksimkopa.lv"))
-                return "brauksimkopa.lv";
+                return "mail.brauksimkopa.lv";
             else if (host.Contains("antikvar.lv"))
                 return "antikvar.lv";
             else
