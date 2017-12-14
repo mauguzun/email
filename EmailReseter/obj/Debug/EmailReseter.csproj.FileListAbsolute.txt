@@ -30,3 +30,4 @@ C:\Users\maugu\Documents\Visual Studio 2015\Projects\EmailReseter\EmailReseter\o
 C:\Users\maugu\Documents\Visual Studio 2015\Projects\EmailReseter\EmailReseter\obj\Debug\EmailReseter.pdb
 C:\Users\maugu\Documents\Visual Studio 2015\Projects\EmailReseter\EmailReseter\bin\Debug\EAGetMail.dll
 C:\Users\maugu\Documents\Visual Studio 2015\Projects\EmailReseter\EmailReseter\obj\Debug\EmailReseter.csprojResolveAssemblyReference.cache
+C:\Users\maugu\Documents\Visual Studio 2015\Projects\EmailReseter\EmailReseter\obj\Debug\EmailReseter.csproj.CoreCompileInputs.cache

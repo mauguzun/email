@@ -27,9 +27,8 @@ namespace EmailReseter
 
         static public string gmailpassword;
 
-
         static List<Gmail> _gmails;
-
+        
 
         public Form1()
         {
@@ -41,9 +40,9 @@ namespace EmailReseter
         private void _Init()
         {
             this.Path = pathTxt.Text.Trim();
-
             _gmails = new List<Gmail>();
            
+
             if (!Directory.Exists(Path + System.IO.Path.DirectorySeparatorChar + "res"))
                 Directory.CreateDirectory(Path + System.IO.Path.DirectorySeparatorChar + "res");
             this._res = Path + System.IO.Path.DirectorySeparatorChar + "res";
@@ -58,12 +57,11 @@ namespace EmailReseter
             if (acc == null)
                 return;
 
-            myCons.Text = "gmail " + Form1.gmailpassword;
-
-            myCons.Text += "start read email ,boss :)";
+            myCons.Text = $"gmail done {Environment.NewLine} start read email ,boss";
+            
 
             Parallel.For(0, acc.Count, new ParallelOptions { MaxDegreeOfParallelism = 10 },    Read );
-
+            #region
             //for (int i = 0; i < acc.Count; i++)
             //{
             //    myCons.Text = acc[i].Email + Environment.NewLine +  myCons.Text;
@@ -76,6 +74,7 @@ namespace EmailReseter
             //    }
 
             //}
+            #endregion;
             this.Update();
         }
 
@@ -84,9 +83,16 @@ namespace EmailReseter
             if (acc != null)
                 this.Update();
 
+
+
             myCons.Text = "load data" + Environment.NewLine;
             var loadAcc = new LoadAccount() { Path = this.Path };
             acc = loadAcc.GetAccountList(Path + '/' + _blaster,Path + '/' + _base,Path);
+
+            // we put all 
+            var allmail  = acc.Where(ex => ex.Email.Contains(".gmail.com")).ToList();
+        
+          
             if (acc == null)
             {
                 MessageBox.Show("dont find gmail  password");
@@ -122,10 +128,11 @@ namespace EmailReseter
         {
 
             count++;
-            this.Text = count.ToString();
+           // this.Text = count.ToString();
 
             Account account = acc[x];
-            string pass = (new Settings().GetEmailPassword(account.Email) == null) ? account.EmailPassword : new Settings().GetEmailPassword(account.Email);
+            string pass = (new Settings().GetEmailPassword(account.Email) == null) 
+                ? account.EmailPassword : new Settings().GetEmailPassword(account.Email);
 
 
             var serverproto = (account.Email.Contains("@gmail.com")) ? ServerProtocol.Imap4 : ServerProtocol.Pop3;
@@ -152,6 +159,8 @@ namespace EmailReseter
                     // 
                     string clearEmail = account.Email.Replace(".", "");
                     gmailCount = _gmails.Where(ee => ee.ClearEmail == clearEmail).Count();
+                   
+
                     if (gmailCount < 1)
                     {
                         for (int i = 0; i < infos.Length; i++)
@@ -175,11 +184,6 @@ namespace EmailReseter
 
 
                    filteredList = _gmails.Where(ee => ee.RealEmail == account.Email).ToList();
-
-
-                 
-
-
                 }
                 
 
@@ -196,7 +200,6 @@ namespace EmailReseter
                     }
                     else
                     {
-                        
                         oMail = oClient.GetMail(info);
                     }
 
@@ -231,16 +234,12 @@ namespace EmailReseter
                     if (resetEmailUrl != null)
                     {
                         RemoteWebDriver driver;
-
-                        if (toolStripComboBoxDriver.Selected.ToString() == "Chrome")
-                            driver = new ChromeDriver();
-                        else
-                            driver = new PhantomJSDriver(_GetJsSettings());
-
+                        driver = new PhantomJSDriver(_GetJsSettings());
+                        //if (toolStripComboBoxDriver.Selected.ToString() == "Chrome")
+                        //    driver = new ChromeDriver();
+                        //else
                         try
                         {
-                           
-
                             driver.Navigate().GoToUrl(resetEmailUrl);
                             Thread.Sleep(5000);
                             string tempPassword = GetPassword();
@@ -451,10 +450,6 @@ namespace EmailReseter
             myCons.Text = "Done ";
         }
 
-        private void updateToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            this.Update();
-        }
 
         private void myCons_TextChanged(object sender, EventArgs e)
         {
@@ -524,6 +519,119 @@ namespace EmailReseter
             
            
             this.Update();
+        }
+
+        private void tryFindLostedToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            //load acc
+
+            myCons.Text = "load data" + Environment.NewLine;
+            var loadAcc = new LoadAccount() { Path = this.Path };
+            acc = loadAcc.GetAccountList(Path + '/' + _blaster, Path + '/' + _base, Path);
+
+            var allGmail = acc.FindAll(w => w.Email.Contains("@gmail.com"));
+
+            List<string> done = new List<string>();
+
+            foreach(var acc in allGmail)
+            {
+
+                myCons.Text = acc.Email;
+                string clearEmail = acc.Email.Replace(".", "");
+                if (done.Contains(clearEmail))
+                {
+                    continue;
+                }
+                done.Add(clearEmail);
+
+                string pass = (new Settings().GetEmailPassword(acc.Email) == null) ? acc.EmailPassword : new Settings().GetEmailPassword(acc.Email);
+
+                MailServer oServer = new MailServer(new Settings().GetEmailHost(acc.Email), acc.Email, pass, ServerProtocol.Pop3);
+                MailClient oClient = new MailClient("TryIt");
+                // Please add the following codes:
+                oServer.SSLConnection = true;
+                oServer.Port = 995;
+                acc.Time = DateTime.Now;
+                try
+                {
+                    oClient.Connect(oServer);
+                    MailInfo[] infos = oClient.GetMailInfos();
+                    infos = infos.Reverse().ToArray();
+                    for (int i = 0; i < 75; i++)
+                    {
+
+                        string resetEmailUrl = null;
+                        MailInfo info = infos[i];
+                        Mail oMail = oClient.GetMail(info);
+                        if ((DateTime.Today - oMail.SentDate).TotalHours > 24)
+                            continue;
+
+                        var subj = oMail.Subject;
+                        var rep = oMail.To[0].Address;
+                        myCons.Text += i.ToString();
+
+                        var x = allGmail.FindAll(em => em.Email == rep);
+
+                        if (allGmail.FindAll(em => em.Email == rep).Count > 0)
+                            continue;
+
+                        //false
+                        if (oMail.From.Address.ToString().Contains("ohno"))
+                            resetEmailUrl = new GetLink().FindLink(oMail.HtmlBody);
+                        else if (oMail.Subject.Contains("reset"))
+                            resetEmailUrl = new GetLink().FindLink(oMail.HtmlBody);
+                        else if (oMail.Subject.Contains("suspicious") || oMail.Subject.Contains("confirm") || oMail.Subject.Contains("reactivate"))
+                        {
+                            resetEmailUrl = new GetLink().FindLink(oMail.HtmlBody);
+                        }
+
+                        if (resetEmailUrl != null)
+                        {
+                            RemoteWebDriver driver;
+                            driver = new PhantomJSDriver(_GetJsSettings());
+                            try
+                            {
+                                driver.Navigate().GoToUrl(resetEmailUrl);
+                                Thread.Sleep(5000);
+                                string tempPassword = GetPassword();
+                                driver.FindElementById("newPassword").SendKeys(tempPassword);
+                                driver.FindElementById("confirmNewPassword").SendKeys(tempPassword);
+                                driver.FindElementByXPath("//button[@type='submit']").Click();
+                                acc.PinPassword = tempPassword;
+                                Thread.Sleep(7000);
+
+                                File.AppendAllText(this._res + '/' + "missed.txt", rep  + ':' + acc.PinPassword + Environment.NewLine);
+                            }
+                            catch (Exception ex)
+                            {
+                                SetPassWordMinusOne();
+                            }
+                            finally
+                            {
+                                driver.Quit();
+                            }
+
+                            // yea we do reset here 
+                        }
+                        File.AppendAllText(this._res + '/' + acc.Nick + ".html",
+                            "<h1>" + acc.Email + "</h1><h3>" + oMail.From.Address + "</h3><h3>" + oMail.ReceivedDate + "</h3><br>" + oMail.HtmlBody + "<br><br><br>");
+
+                        // Mark email as deleted from POP3 server.
+                        oClient.Delete(info);
+                    }
+
+                    // Quit and pure emails marked as deleted from POP3 server.
+                    oClient.Quit();
+                   
+                }
+                catch (Exception ep)
+                {
+                    File.AppendAllText(this._res + System.IO.Path.DirectorySeparatorChar + "total_bad.txt", acc.Email + Environment.NewLine);
+                  
+                }
+            }
+            //naiti vse gmail
+            // proverit vse pochti gmail gde netu acc
         }
     }
 }

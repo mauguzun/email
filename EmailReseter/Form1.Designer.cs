@@ -34,11 +34,11 @@
             this.updateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.pathTxt = new System.Windows.Forms.ToolStripTextBox();
             this.setPathToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripComboBoxDriver = new System.Windows.Forms.ToolStripComboBox();
             this.updateGoodToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.dataGridView = new System.Windows.Forms.DataGridView();
             this.myCons = new System.Windows.Forms.RichTextBox();
+            this.tryFindLostedToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -55,8 +55,8 @@
             this.updateToolStripMenuItem,
             this.pathTxt,
             this.setPathToolStripMenuItem,
-            this.toolStripComboBoxDriver,
-            this.updateGoodToolStripMenuItem});
+            this.updateGoodToolStripMenuItem,
+            this.tryFindLostedToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(738, 27);
@@ -74,16 +74,14 @@
             // loadToolStripMenuItem
             // 
             this.loadToolStripMenuItem.Name = "loadToolStripMenuItem";
-            this.loadToolStripMenuItem.Size = new System.Drawing.Size(94, 23);
+            this.loadToolStripMenuItem.Size = new System.Drawing.Size(45, 23);
             this.loadToolStripMenuItem.Text = "Load";
             this.loadToolStripMenuItem.Click += new System.EventHandler(this.loadToolStripMenuItem_Click);
             // 
             // updateToolStripMenuItem
             // 
             this.updateToolStripMenuItem.Name = "updateToolStripMenuItem";
-            this.updateToolStripMenuItem.Size = new System.Drawing.Size(57, 23);
-            this.updateToolStripMenuItem.Text = "Update";
-            this.updateToolStripMenuItem.Click += new System.EventHandler(this.updateToolStripMenuItem_Click);
+            this.updateToolStripMenuItem.Size = new System.Drawing.Size(12, 23);
             // 
             // pathTxt
             // 
@@ -97,14 +95,6 @@
             this.setPathToolStripMenuItem.Size = new System.Drawing.Size(59, 23);
             this.setPathToolStripMenuItem.Text = "SetPath";
             this.setPathToolStripMenuItem.Click += new System.EventHandler(this.setPathToolStripMenuItem_Click);
-            // 
-            // toolStripComboBoxDriver
-            // 
-            this.toolStripComboBoxDriver.Items.AddRange(new object[] {
-            "Phantom",
-            "Chrome"});
-            this.toolStripComboBoxDriver.Name = "toolStripComboBoxDriver";
-            this.toolStripComboBoxDriver.Size = new System.Drawing.Size(121, 23);
             // 
             // updateGoodToolStripMenuItem
             // 
@@ -159,6 +149,13 @@
             this.myCons.Text = "";
             this.myCons.TextChanged += new System.EventHandler(this.myCons_TextChanged);
             // 
+            // tryFindLostedToolStripMenuItem
+            // 
+            this.tryFindLostedToolStripMenuItem.Name = "tryFindLostedToolStripMenuItem";
+            this.tryFindLostedToolStripMenuItem.Size = new System.Drawing.Size(99, 23);
+            this.tryFindLostedToolStripMenuItem.Text = "Try Find Losted";
+            this.tryFindLostedToolStripMenuItem.Click += new System.EventHandler(this.tryFindLostedToolStripMenuItem_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -192,8 +189,8 @@
         private System.Windows.Forms.RichTextBox myCons;
         private System.Windows.Forms.ToolStripTextBox pathTxt;
         private System.Windows.Forms.ToolStripMenuItem setPathToolStripMenuItem;
-        private System.Windows.Forms.ToolStripComboBox toolStripComboBoxDriver;
         private System.Windows.Forms.ToolStripMenuItem updateGoodToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem tryFindLostedToolStripMenuItem;
     }
 }
 
