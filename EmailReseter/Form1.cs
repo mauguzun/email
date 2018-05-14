@@ -511,11 +511,11 @@ namespace EmailReseter
 
                 if (query.Count() > 0)
                 {
-                    acc[i].PinPassword = query.FirstOrDefault();
+                    acc[i].PinPassword = query.LastOrDefault();
                 }
             }
 
-
+            var x = acc;
             
            
             this.Update();
@@ -576,11 +576,11 @@ namespace EmailReseter
                             continue;
 
                         //false
-                        if (oMail.From.Address.ToString().Contains("ohno"))
+                        if (oMail.From.Address.ToString().Contains("ohno") || oMail.From.Address.ToString().Contains("confirm"))
                             resetEmailUrl = new GetLink().FindLink(oMail.HtmlBody);
-                        else if (oMail.Subject.Contains("reset"))
+                        else if (oMail.Subject.Contains("pinterest"))
                             resetEmailUrl = new GetLink().FindLink(oMail.HtmlBody);
-                        else if (oMail.Subject.Contains("suspicious") || oMail.Subject.Contains("confirm") || oMail.Subject.Contains("reactivate"))
+                        else if (oMail.Subject.Contains("suspicious") || oMail.Subject.Contains("reactivate"))
                         {
                             resetEmailUrl = new GetLink().FindLink(oMail.HtmlBody);
                         }
