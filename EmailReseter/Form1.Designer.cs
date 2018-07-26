@@ -35,10 +35,10 @@
             this.pathTxt = new System.Windows.Forms.ToolStripTextBox();
             this.setPathToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.updateGoodToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.tryFindLostedToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.dataGridView = new System.Windows.Forms.DataGridView();
             this.myCons = new System.Windows.Forms.RichTextBox();
-            this.tryFindLostedToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -103,6 +103,13 @@
             this.updateGoodToolStripMenuItem.Text = "Update Good";
             this.updateGoodToolStripMenuItem.Click += new System.EventHandler(this.updateGoodToolStripMenuItem_Click);
             // 
+            // tryFindLostedToolStripMenuItem
+            // 
+            this.tryFindLostedToolStripMenuItem.Name = "tryFindLostedToolStripMenuItem";
+            this.tryFindLostedToolStripMenuItem.Size = new System.Drawing.Size(99, 23);
+            this.tryFindLostedToolStripMenuItem.Text = "Try Find Losted";
+            this.tryFindLostedToolStripMenuItem.Click += new System.EventHandler(this.tryFindLostedToolStripMenuItem_Click);
+            // 
             // splitContainer1
             // 
             this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -148,13 +155,6 @@
             this.myCons.TabIndex = 0;
             this.myCons.Text = "";
             this.myCons.TextChanged += new System.EventHandler(this.myCons_TextChanged);
-            // 
-            // tryFindLostedToolStripMenuItem
-            // 
-            this.tryFindLostedToolStripMenuItem.Name = "tryFindLostedToolStripMenuItem";
-            this.tryFindLostedToolStripMenuItem.Size = new System.Drawing.Size(99, 23);
-            this.tryFindLostedToolStripMenuItem.Text = "Try Find Losted";
-            this.tryFindLostedToolStripMenuItem.Click += new System.EventHandler(this.tryFindLostedToolStripMenuItem_Click);
             // 
             // Form1
             // 

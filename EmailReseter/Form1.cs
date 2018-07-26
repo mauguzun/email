@@ -221,15 +221,9 @@ namespace EmailReseter
                     }
 
                     //false
-                    if (oMail.From.Address.ToString().Contains("ohno"))
+                    if (oMail.From.Address.ToString().Contains("pinterest"))
                         resetEmailUrl = new GetLink().FindLink(oMail.HtmlBody);
-                    else if (oMail.Subject.Contains("reset"))
-                        resetEmailUrl = new GetLink().FindLink(oMail.HtmlBody);
-                    else if (oMail.From.Address.Contains("suspicious") || oMail.From.Address.Contains("Get back on Pinterest") || oMail.From.Address.Contains("confirm") || oMail.From.Address.Contains("reactivate"))
-                    {
-                        var sibe = oMail.Subject;
-                        resetEmailUrl = new GetLink().FindLink(oMail.HtmlBody);
-                    }
+             
 
                     if (resetEmailUrl != null)
                     {
@@ -331,15 +325,15 @@ namespace EmailReseter
                         }
                     }
 
-                    //false
-                    if (oMail.From.Address.ToString().Contains("ohno"))
-                        resetEmailUrl = new GetLink().FindLink(oMail.HtmlBody);
-                    else if (oMail.Subject.Contains("reset"))
-                        resetEmailUrl = new GetLink().FindLink(oMail.HtmlBody);
-                    else if (oMail.Subject.Contains("suspicious") || oMail.Subject.Contains("confirm") || oMail.Subject.Contains("reactivate"))
+                    if (acc.Email == "dinm.o.b.ilweb.app.re.l@gmail.com")
                     {
-                        resetEmailUrl = new GetLink().FindLink(oMail.HtmlBody);
+                        var x = 0;
                     }
+
+                    //false
+                     if (oMail.From.Address.ToString().Contains("pinterest.com"))
+                        resetEmailUrl = new GetLink().FindLink(oMail.HtmlBody);
+                  
 
                     if (resetEmailUrl != null)
                     {
@@ -576,14 +570,9 @@ namespace EmailReseter
                             continue;
 
                         //false
-                        if (oMail.From.Address.ToString().Contains("ohno") || oMail.From.Address.ToString().Contains("confirm"))
+                        if (oMail.From.Address.ToString().Contains("pinterest") )
                             resetEmailUrl = new GetLink().FindLink(oMail.HtmlBody);
-                        else if (oMail.Subject.Contains("pinterest"))
-                            resetEmailUrl = new GetLink().FindLink(oMail.HtmlBody);
-                        else if (oMail.Subject.Contains("suspicious") || oMail.Subject.Contains("reactivate"))
-                        {
-                            resetEmailUrl = new GetLink().FindLink(oMail.HtmlBody);
-                        }
+                      
 
                         if (resetEmailUrl != null)
                         {
