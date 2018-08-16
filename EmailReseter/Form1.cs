@@ -10,6 +10,7 @@ using System.IO;
 using EAGetMail;
 using OpenQA.Selenium.PhantomJS;
 using OpenQA.Selenium.Remote;
+using HtmlAgilityPack;
 
 namespace EmailReseter
 {
@@ -153,38 +154,38 @@ namespace EmailReseter
                 /////////////// here :) just read all 
 
                 int gmailCount = 25;
-                List<Gmail> filteredList = null;
-                if (account.Email.Contains("@gmail.com"))
-                {
-                    // 
-                    string clearEmail = account.Email.Replace(".", "");
-                    gmailCount = _gmails.Where(ee => ee.ClearEmail == clearEmail).Count();
+                //List<Gmail> filteredList = null;
+                //if (account.Email.Contains("@gmail.com"))
+                //{
+                //    // 
+                //    string clearEmail = account.Email.Replace(".", "");
+                //    gmailCount = _gmails.Where(ee => ee.ClearEmail == clearEmail).Count();
                    
 
-                    if (gmailCount < 1)
-                    {
-                        for (int i = 0; i < infos.Length; i++)
-                        {
-                            MailInfo info = infos[i];
-                            Mail oMail = oClient.GetMail(info);
+                //    if (gmailCount < 1)
+                //    {
+                //        for (int i = 0; i < infos.Length; i++)
+                //        {
+                //            MailInfo info = infos[i];
+                //            Mail oMail = oClient.GetMail(info);
 
-                            _gmails.Add(new Gmail()
-                            {
-                                ClearEmail = clearEmail,
-                                RealEmail = oMail.To[0].Address,
-                                Body = oMail.HtmlBody,
-                                Date = oMail.SentDate,
-                                Header = oMail.Subject,
-                                Eagtmail = oMail,
+                //            _gmails.Add(new Gmail()
+                //            {
+                //                ClearEmail = clearEmail,
+                //                RealEmail = oMail.To[0].Address,
+                //                Body = oMail.HtmlBody,
+                //                Date = oMail.SentDate,
+                //                Header = oMail.Subject,
+                //                Eagtmail = oMail,
                                 
-                            });
-                        }
+                //            });
+                //        }
                         
-                    }
+                //    }
 
 
-                   filteredList = _gmails.Where(ee => ee.RealEmail == account.Email).ToList();
-                }
+                //   filteredList = _gmails.Where(ee => ee.RealEmail == account.Email).ToList();
+                //}
                 
 
                 for (int i = 0; i < gmailCount; i++)
@@ -194,16 +195,56 @@ namespace EmailReseter
 
                     MailInfo info = infos[i];
                     Mail oMail;
-                    if (account.Email.Contains("@gmail.com"))
-                    {
-                        oMail = filteredList[i].Eagtmail;
-                    }
-                    else
-                    {
+            
+                   
                         oMail = oClient.GetMail(info);
+
+
+                    if (oMail.HtmlBody.Contains("suspended your Pinterest"))
+                    {
+                        HtmlAgilityPack.HtmlDocument doc = new HtmlAgilityPack.HtmlDocument();
+                        doc.LoadHtml(oMail.HtmlBody);
+                        HtmlNodeCollection links = doc.DocumentNode.SelectNodes("//a");
+                        foreach (HtmlNode link in links)
+                        {
+
+                            if (link.InnerText.Contains("this link"))
+                            {
+
+                                RemoteWebDriver driver = new PhantomJSDriver(_GetJsSettings());
+                                driver.Navigate().GoToUrl(link.GetAttributeValue("href", null));
+                                Thread.Sleep(5000);
+                                driver.Quit();
+                                myCons.Text = "spam policy";
+                                oClient.Delete(info);
+                            }
+
+                        }
+                        continue;
+                    }
+                    else if (oMail.HtmlBody.Contains("Confirm your email"))
+                    {
+                        HtmlAgilityPack.HtmlDocument doc = new HtmlAgilityPack.HtmlDocument();
+                        doc.LoadHtml(oMail.HtmlBody);
+                        HtmlNodeCollection links = doc.DocumentNode.SelectNodes("//a");
+                        foreach (HtmlNode link in links)
+                        {
+
+                            if (link.InnerText.Contains("Confirm your email"))
+                            {
+
+                                RemoteWebDriver driver = new PhantomJSDriver(_GetJsSettings());
+                                driver.Navigate().GoToUrl(link.GetAttributeValue("href", null));
+                                Thread.Sleep(5000);
+                                driver.Quit();
+                                myCons.Text = "Confirm";
+                                oClient.Delete(info);
+                            }
+
+                        }
+                        continue;
                     }
 
-                    
 
 
                     if ((DateTime.Today - oMail.SentDate).TotalHours > 12)
@@ -248,22 +289,24 @@ namespace EmailReseter
                         }
                         catch (Exception ex)
                         {
+                            oClient.Delete(info);
                             SetPassWordMinusOne();
+
 
                         }
                         finally
                         {
-                           
+                            oClient.Delete(info);
                             driver.Quit();
                         }
 
                         // yea we do reset here 
                     }
-                    File.AppendAllText(this._res + '/' + account.Nick + ".html",
-                        "<h1>" + account.Email + "</h1><h3>" + oMail.From.Address + "</h3><h3>" + oMail.ReceivedDate + "</h3><br>" + oMail.HtmlBody + "<br><br><br>");
+                    //File.AppendAllText(this._res + '/' + account.Nick + ".html",
+                    //    "<h1>" + account.Email + "</h1><h3>" + oMail.From.Address + "</h3><h3>" + oMail.ReceivedDate + "</h3><br>" + oMail.HtmlBody + "<br><br><br>");
 
                     // Mark email as deleted from POP3 server.
-                    oClient.Delete(info);
+                   
                 }
 
                 // Quit and pure emails marked as deleted from POP3 server.

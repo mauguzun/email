@@ -32,3 +32,22 @@ C:\Users\maugu\Documents\Visual Studio 2015\Projects\EmailReseter\EmailReseter\b
 C:\Users\maugu\Documents\Visual Studio 2015\Projects\EmailReseter\EmailReseter\obj\Debug\EmailReseter.csproj.CoreCompileInputs.cache
 C:\Users\maugu\Documents\Visual Studio 2015\Projects\EmailReseter\EmailReseter\obj\Debug\EmailReseter.csproj.CopyComplete
 C:\Users\maugu\Documents\Visual Studio 2015\Projects\EmailReseter\EmailReseter\obj\Debug\EmailReseter.csprojAssemblyReference.cache
+C:\email\EmailReseter\bin\Debug\phantomjs.exe
+C:\email\EmailReseter\bin\Debug\phantomjs-license.txt
+C:\email\EmailReseter\bin\Debug\EmailReseter.exe.config
+C:\email\EmailReseter\bin\Debug\EmailReseter.exe
+C:\email\EmailReseter\bin\Debug\EmailReseter.pdb
+C:\email\EmailReseter\bin\Debug\EAGetMail.dll
+C:\email\EmailReseter\bin\Debug\HtmlAgilityPack.dll
+C:\email\EmailReseter\bin\Debug\WebDriver.dll
+C:\email\EmailReseter\bin\Debug\HtmlAgilityPack.pdb
+C:\email\EmailReseter\bin\Debug\HtmlAgilityPack.xml
+C:\email\EmailReseter\bin\Debug\WebDriver.xml
+C:\email\EmailReseter\obj\Debug\EmailReseter.csprojAssemblyReference.cache
+C:\email\EmailReseter\obj\Debug\EmailReseter.Form1.resources
+C:\email\EmailReseter\obj\Debug\EmailReseter.Properties.Resources.resources
+C:\email\EmailReseter\obj\Debug\EmailReseter.csproj.GenerateResource.cache
+C:\email\EmailReseter\obj\Debug\EmailReseter.csproj.CoreCompileInputs.cache
+C:\email\EmailReseter\obj\Debug\EmailReseter.csproj.CopyComplete
+C:\email\EmailReseter\obj\Debug\EmailReseter.exe
+C:\email\EmailReseter\obj\Debug\EmailReseter.pdb
