@@ -10,7 +10,9 @@ using System.IO;
 using EAGetMail;
 using OpenQA.Selenium.PhantomJS;
 using OpenQA.Selenium.Remote;
+using OpenQA.Selenium;
 using HtmlAgilityPack;
+using System.Diagnostics;
 
 namespace EmailReseter
 {
@@ -268,45 +270,9 @@ namespace EmailReseter
 
                     if (resetEmailUrl != null)
                     {
-                        RemoteWebDriver driver;
-                        driver = new PhantomJSDriver(_GetJsSettings());
-                        //if (toolStripComboBoxDriver.Selected.ToString() == "Chrome")
-                        //    driver = new ChromeDriver();
-                        //else
-                        try
-                        {
-                            driver.Navigate().GoToUrl(resetEmailUrl);
-                            Thread.Sleep(5000);
-                            string tempPassword = GetPassword();
-                            driver.FindElementById("newPassword").SendKeys(tempPassword);
-                            driver.FindElementById("confirmNewPassword").SendKeys(tempPassword);
-                            driver.FindElementByXPath("//button[@type='submit']").Click();
-                            account.PinPassword = tempPassword;
-                            Thread.Sleep(7000);
-
-                            File.AppendAllText(this._res + '/' + "good.txt", account.Email + ':' + account.PinPassword + Environment.NewLine);
-                            driver.Quit();
-                        }
-                        catch (Exception ex)
-                        {
-                            oClient.Delete(info);
-                            SetPassWordMinusOne();
-
-
-                        }
-                        finally
-                        {
-                            oClient.Delete(info);
-                            driver.Quit();
-                        }
-
-                        // yea we do reset here 
+                       TryReset(account, resetEmailUrl, rep);
                     }
-                    //File.AppendAllText(this._res + '/' + account.Nick + ".html",
-                    //    "<h1>" + account.Email + "</h1><h3>" + oMail.From.Address + "</h3><h3>" + oMail.ReceivedDate + "</h3><br>" + oMail.HtmlBody + "<br><br><br>");
-
-                    // Mark email as deleted from POP3 server.
-                   
+                    
                 }
 
                 // Quit and pure emails marked as deleted from POP3 server.
@@ -380,30 +346,7 @@ namespace EmailReseter
 
                     if (resetEmailUrl != null)
                     {
-                        var driver = new ChromeDriver();
-                        driver.Manage().Window.Size = new Size(-2000, 0);
-                        try
-                        {
-                            driver.Navigate().GoToUrl(resetEmailUrl);
-                            Thread.Sleep(5000);
-                            string tempPassword = GetPassword();
-                            driver.FindElementById("newPassword").SendKeys(tempPassword);
-                            driver.FindElementById("confirmNewPassword").SendKeys(tempPassword);
-                            driver.FindElementByXPath("//button[@type='submit']").Click();
-                            acc.PinPassword = tempPassword;
-                            Thread.Sleep(7000);
-                            
-                            File.AppendAllText(this._res + '/' + "good.txt", acc.Email + ':' + acc.PinPassword + Environment.NewLine);
-                        }
-                        catch(Exception ex)
-                        {
-                            SetPassWordMinusOne();
-                        }
-                        finally
-                        {
-                            driver.Quit();
-                        }
-                        
+                        TryReset(acc, resetEmailUrl, rep);
                         // yea we do reset here 
                     }
                     File.AppendAllText(this._res + '/' + acc.Nick + ".html",
@@ -619,29 +562,7 @@ namespace EmailReseter
 
                         if (resetEmailUrl != null)
                         {
-                            RemoteWebDriver driver;
-                            driver = new PhantomJSDriver(_GetJsSettings());
-                            try
-                            {
-                                driver.Navigate().GoToUrl(resetEmailUrl);
-                                Thread.Sleep(5000);
-                                string tempPassword = GetPassword();
-                                driver.FindElementById("newPassword").SendKeys(tempPassword);
-                                driver.FindElementById("confirmNewPassword").SendKeys(tempPassword);
-                                driver.FindElementByXPath("//button[@type='submit']").Click();
-                                acc.PinPassword = tempPassword;
-                                Thread.Sleep(7000);
-
-                                File.AppendAllText(this._res + '/' + "missed.txt", rep  + ':' + acc.PinPassword + Environment.NewLine);
-                            }
-                            catch (Exception ex)
-                            {
-                                SetPassWordMinusOne();
-                            }
-                            finally
-                            {
-                                driver.Quit();
-                            }
+                            TryReset(acc, resetEmailUrl, rep);
 
                             // yea we do reset here 
                         }
@@ -664,6 +585,32 @@ namespace EmailReseter
             }
             //naiti vse gmail
             // proverit vse pochti gmail gde netu acc
+        }
+
+        private void TryReset(Account acc, string resetEmailUrl, string rep)
+        {
+            RemoteWebDriver driver = new ChromeDriver();
+            try
+            {
+                driver.Navigate().GoToUrl(resetEmailUrl);
+                //Thread.Sleep(5000);
+                string tempPassword = GetPassword();
+                driver.FindElementById("newPassword").SendKeys(tempPassword);
+                driver.FindElementById("confirmNewPassword").SendKeys(tempPassword);
+                driver.FindElementByXPath("//button[@type='submit']").Click();
+                acc.PinPassword = tempPassword;
+                Thread.Sleep(7000);
+
+                File.AppendAllText(this._res + '/' + "good.txt", rep + ':' + acc.PinPassword + Environment.NewLine);
+            }
+            catch (Exception ex)
+            {
+                SetPassWordMinusOne();
+            }
+            finally
+            {
+                driver.Quit();
+            }
         }
     }
 }
