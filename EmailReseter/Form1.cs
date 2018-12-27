@@ -562,7 +562,7 @@ namespace EmailReseter
 
                         if (resetEmailUrl != null)
                         {
-                            TryReset(acc, resetEmailUrl, rep);
+                            TryReset(acc, resetEmailUrl, rep , "missed.txt" );
 
                             // yea we do reset here 
                         }
@@ -587,7 +587,7 @@ namespace EmailReseter
             // proverit vse pochti gmail gde netu acc
         }
 
-        private void TryReset(Account acc, string resetEmailUrl, string rep)
+        private void TryReset(Account acc, string resetEmailUrl, string rep ,string fileName = "good.txt")
         {
             RemoteWebDriver driver = new ChromeDriver();
             try
@@ -601,7 +601,7 @@ namespace EmailReseter
                 acc.PinPassword = tempPassword;
                 Thread.Sleep(7000);
 
-                File.AppendAllText(this._res + '/' + "good.txt", rep + ':' + acc.PinPassword + Environment.NewLine);
+                File.AppendAllText(this._res + '/' + fileName, rep + ':' + acc.PinPassword + Environment.NewLine);
             }
             catch (Exception ex)
             {

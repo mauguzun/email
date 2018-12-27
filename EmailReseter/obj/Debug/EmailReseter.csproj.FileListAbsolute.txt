@@ -43,7 +43,6 @@ C:\email\EmailReseter\bin\Debug\WebDriver.dll
 C:\email\EmailReseter\bin\Debug\HtmlAgilityPack.pdb
 C:\email\EmailReseter\bin\Debug\HtmlAgilityPack.xml
 C:\email\EmailReseter\bin\Debug\WebDriver.xml
-C:\email\EmailReseter\obj\Debug\EmailReseter.csprojAssemblyReference.cache
 C:\email\EmailReseter\obj\Debug\EmailReseter.Form1.resources
 C:\email\EmailReseter\obj\Debug\EmailReseter.Properties.Resources.resources
 C:\email\EmailReseter\obj\Debug\EmailReseter.csproj.GenerateResource.cache
