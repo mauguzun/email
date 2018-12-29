@@ -50,3 +50,4 @@ C:\email\EmailReseter\obj\Debug\EmailReseter.csproj.CoreCompileInputs.cache
 C:\email\EmailReseter\obj\Debug\EmailReseter.csproj.CopyComplete
 C:\email\EmailReseter\obj\Debug\EmailReseter.exe
 C:\email\EmailReseter\obj\Debug\EmailReseter.pdb
+C:\email\EmailReseter\obj\Debug\EmailReseter.csprojAssemblyReference.cache

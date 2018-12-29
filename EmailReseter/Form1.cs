@@ -589,7 +589,10 @@ namespace EmailReseter
 
         private void TryReset(Account acc, string resetEmailUrl, string rep ,string fileName = "good.txt")
         {
-            RemoteWebDriver driver = new ChromeDriver();
+            ChromeOptions options = new ChromeOptions();
+
+            options.AddArgument("headless");
+            RemoteWebDriver driver = new ChromeDriver(options);
             try
             {
                 driver.Navigate().GoToUrl(resetEmailUrl);
