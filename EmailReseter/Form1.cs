@@ -213,7 +213,7 @@ namespace EmailReseter
                             if (link.InnerText.Contains("this link"))
                             {
 
-                                RemoteWebDriver driver = new PhantomJSDriver(_GetJsSettings());
+                                var driver = GetDriver();
                                 driver.Navigate().GoToUrl(link.GetAttributeValue("href", null));
                                 Thread.Sleep(5000);
                                 driver.Quit();
@@ -235,7 +235,8 @@ namespace EmailReseter
                             if (link.InnerText.Contains("Confirm your email"))
                             {
 
-                                RemoteWebDriver driver = new PhantomJSDriver(_GetJsSettings());
+                                var driver = GetDriver();
+
                                 driver.Navigate().GoToUrl(link.GetAttributeValue("href", null));
                                 Thread.Sleep(5000);
                                 driver.Quit();
@@ -587,12 +588,24 @@ namespace EmailReseter
             // proverit vse pochti gmail gde netu acc
         }
 
-        private void TryReset(Account acc, string resetEmailUrl, string rep ,string fileName = "good.txt")
+        private RemoteWebDriver GetDriver()
         {
             ChromeOptions options = new ChromeOptions();
-
+            ChromeDriverService service = ChromeDriverService.CreateDefaultService();
+            service.SuppressInitialDiagnosticInformation = true;
+            service.HideCommandPromptWindow = true;
+            options.AddArgument("--log-level=3");
             options.AddArgument("headless");
-            RemoteWebDriver driver = new ChromeDriver(options);
+            RemoteWebDriver driver = new ChromeDriver(service, options);
+            return driver;
+
+        }
+            
+
+
+        private void TryReset(Account acc, string resetEmailUrl, string rep ,string fileName = "good.txt")
+        {
+            var driver = GetDriver();
             try
             {
                 driver.Navigate().GoToUrl(resetEmailUrl);
