@@ -21,7 +21,9 @@ namespace EmailReseter
                 Form1.gmailpassword = gmailpasss;
             }
             catch
-            { return null; }
+            { return null;
+               
+            }
 
 
             string[] blaster = File.ReadAllLines(@blasters);

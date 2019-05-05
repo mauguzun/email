@@ -8,7 +8,6 @@ using System.Windows.Forms;
 using OpenQA.Selenium.Chrome;
 using System.IO;
 using EAGetMail;
-using OpenQA.Selenium.PhantomJS;
 using OpenQA.Selenium.Remote;
 using OpenQA.Selenium;
 using HtmlAgilityPack;
@@ -121,12 +120,12 @@ namespace EmailReseter
             }
                 
         }
-        private static PhantomJSDriverService _GetJsSettings()
-        {
-            var serviceJs = PhantomJSDriverService.CreateDefaultService();
-            serviceJs.HideCommandPromptWindow = true;
-            return serviceJs;
-        }
+        //private static PhantomJSDriverService _GetJsSettings()
+        //{
+        //    var serviceJs = PhantomJSDriverService.CreateDefaultService();
+        //    serviceJs.HideCommandPromptWindow = true;
+        //    return serviceJs;
+        //}
         public void Read(int x)
         {
 

@@ -1068,3 +1068,4 @@
 [0204/124450.710:ERROR:exception_snapshot_win.cc(88)] thread ID 2012 not found in process
 [0204/125613.568:ERROR:process_reader_win.cc(123)] NtOpenThread: {Access Denied} A process has requested access to an object, but has not been granted those access rights. (0xc0000022)
 [0204/125613.569:ERROR:exception_snapshot_win.cc(88)] thread ID 784 not found in process
+[0425/234422.069:ERROR:prune_crash_reports.cc(34)] PruneCrashReportDatabase: Failed to get pending reports
