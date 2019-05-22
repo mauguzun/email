@@ -35,10 +35,28 @@ namespace EmailReseter
         public Form1()
         {
             InitializeComponent();
+            Test();
             _Init();
-           
+         
         }
         
+
+        private void Test()
+        {
+     
+            MailServer oServer = new MailServer("pop.mail.ru", "ZaharovaLozanna@list.ru","UxJKzbD48" ,ServerProtocol.Pop3);
+            MailClient oClient = new MailClient("TryIt");
+            // Please add the following codes:
+            oServer.SSLConnection = true;
+            oServer.Port = 995;
+          
+           
+                oClient.Connect(oServer);
+                MailInfo[] infos = oClient.GetMailInfos();
+                infos = infos.Reverse().ToArray();
+
+
+          }
         private void _Init()
         {
             this.Path = pathTxt.Text.Trim();
@@ -62,7 +80,7 @@ namespace EmailReseter
             myCons.Text = $"gmail done {Environment.NewLine} start read email ,boss";
             
 
-            Parallel.For(0, acc.Count, new ParallelOptions { MaxDegreeOfParallelism = 10 },    Read );
+            Parallel.For(0, acc.Count, new ParallelOptions { MaxDegreeOfParallelism = 20 },    Read );
             #region
             //for (int i = 0; i < acc.Count; i++)
             //{
@@ -144,7 +162,7 @@ namespace EmailReseter
             MailClient oClient = new MailClient("TryIt");
             // Please add the following codes:
             oServer.SSLConnection = true;
-            oServer.Port = (account.Email.Contains("@gmail.com")) ? 993: 995;
+            oServer.Port = (account.Email.Contains("@gmail.com")) ? 993 : 995;
             account.Time = DateTime.Now;
             try
             {
@@ -303,11 +321,14 @@ namespace EmailReseter
 
             string pass = (new Settings().GetEmailPassword(acc.Email) == null) ? acc.EmailPassword : new Settings().GetEmailPassword(acc.Email);
 
-            MailServer oServer = new MailServer(new Settings().GetEmailHost(acc.Email), acc.Email, pass, ServerProtocol.Pop3);
+            MailServer oServer = new MailServer(new Settings().GetEmailHost(acc.Email), acc.Email, acc.EmailPassword, ServerProtocol.Pop3);
             MailClient oClient = new MailClient("TryIt");
             // Please add the following codes:
             oServer.SSLConnection = true;
             oServer.Port = 995;
+
+
+    
             acc.Time = DateTime.Now;
             try
             {
@@ -424,7 +445,11 @@ namespace EmailReseter
 
             SendEmail send = new SendEmail();
             send.Send(body);
-            
+
+           
+            Uploader.MakePost(this.acc);
+            // udpate mongo 
+
 
 
             myCons.Text = "Done ";
@@ -615,7 +640,7 @@ namespace EmailReseter
                 driver.FindElementByXPath("//button[@type='submit']").Click();
                 acc.PinPassword = tempPassword;
                 Thread.Sleep(7000);
-
+                Uploader.MakePost(this.acc);
                 File.AppendAllText(this._res + '/' + fileName, rep + ':' + acc.PinPassword + Environment.NewLine);
             }
             catch (Exception ex)

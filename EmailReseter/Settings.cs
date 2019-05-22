@@ -21,7 +21,7 @@ namespace EmailReseter
         {
 
 
-            if (host.Contains("@mail.ru"))
+            if (host.Contains("@mail.ru")  | host.Contains("@mail.ua") | host.Contains("@list.ru"))
                 return "pop.mail.ru";
             else if (host.Contains("@gmail.com"))
                 return "imap.gmail.com";
@@ -29,8 +29,9 @@ namespace EmailReseter
                 return "pop.bk.ru";
             else if (host.Contains("@inbox.ru"))
                 return "pop.inbox.ru";
-            else if (host.Contains("@mail.ua"))
-                return "pop.mail.ua";
+               //else if (host.Contains("@list.ru"))
+               // return "pop.list.ru";
+            
             else if (host.Contains("internet-veikals.lv"))
                 return "mail.internet-veikals.lv";
             else if (host.Contains("brauksimkopa.lv"))

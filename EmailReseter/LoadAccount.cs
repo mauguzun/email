@@ -33,7 +33,7 @@ namespace EmailReseter
                 
                 if (!acc.Keys.Contains(blParam[0]))
                 {
-                    acc.Add(blParam[0],new Account() { Email = blParam[0], PinPassword = blParam[1], Nick = blParam[2] });
+                    acc.Add(blParam[0],new Account() { Email =  blParam[0].ToLower(), PinPassword = blParam[1], Nick = blParam[2] });
                 }
                 else
                 {
@@ -48,8 +48,8 @@ namespace EmailReseter
             {
                 string[] blParam = line.Split(':');
 
-                 if(acc.Keys.Contains(blParam[0]))
-                    acc[blParam[0]].EmailPassword = blParam[1];
+                 if(acc.Keys.Contains(blParam[0].ToLower()))
+                    acc[blParam[0].ToLower()].EmailPassword = blParam[1];
             }
             return acc.Values.ToList();
 
