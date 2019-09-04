@@ -15,7 +15,7 @@ using System.Diagnostics;
 
 namespace EmailReseter
 {
-    public partial class Form1 :System.Windows.Forms.Form
+    public partial class Form1 : System.Windows.Forms.Form
     {
         private string Path { get; set; }
         List<Account> acc;
@@ -30,45 +30,52 @@ namespace EmailReseter
         static public string gmailpassword;
 
         static List<Gmail> _gmails;
-        
+
 
         public Form1()
         {
             InitializeComponent();
             Test();
             _Init();
-         
+
+       
+            
+
         }
-        
+
 
         private void Test()
         {
-     
-            MailServer oServer = new MailServer("pop.mail.ru", "ZaharovaLozanna@list.ru","UxJKzbD48" ,ServerProtocol.Pop3);
-            MailClient oClient = new MailClient("TryIt");
-            // Please add the following codes:
-            oServer.SSLConnection = true;
-            oServer.Port = 995;
-          
-           
-                oClient.Connect(oServer);
-                MailInfo[] infos = oClient.GetMailInfos();
-                infos = infos.Reverse().ToArray();
+            try
+            {
+                //ChromeOptions options = new ChromeOptions();
+                //ChromeDriverService service = ChromeDriverService.CreateDefaultService();
+                //service.SuppressInitialDiagnosticInformation = true;
+                //service.HideCommandPromptWindow = true;
+                //options.AddArgument("--log-level=3");
+                //options.AddArgument("headless");
+                //RemoteWebDriver driver = new ChromeDriver(service, options);
 
+                //driver.Quit();
+            }
+            catch
+            {
+                MessageBox.Show("cant make driver");
+            }
 
-          }
+        }
         private void _Init()
         {
             this.Path = pathTxt.Text.Trim();
             _gmails = new List<Gmail>();
-           
+
 
             if (!Directory.Exists(Path + System.IO.Path.DirectorySeparatorChar + "res"))
                 Directory.CreateDirectory(Path + System.IO.Path.DirectorySeparatorChar + "res");
             this._res = Path + System.IO.Path.DirectorySeparatorChar + "res";
 
             if (!File.Exists(this._res + System.IO.Path.DirectorySeparatorChar + _num))
-                File.WriteAllText(this._res + System.IO.Path.DirectorySeparatorChar + _num,"1");
+                File.WriteAllText(this._res + System.IO.Path.DirectorySeparatorChar + _num, "1");
 
         }
 
@@ -78,9 +85,9 @@ namespace EmailReseter
                 return;
 
             myCons.Text = $"gmail done {Environment.NewLine} start read email ,boss";
-            
 
-            Parallel.For(0, acc.Count, new ParallelOptions { MaxDegreeOfParallelism = 20 },    Read );
+
+            Parallel.For(0, acc.Count, new ParallelOptions { MaxDegreeOfParallelism = 20 }, Read);
             #region
             //for (int i = 0; i < acc.Count; i++)
             //{
@@ -107,12 +114,12 @@ namespace EmailReseter
 
             myCons.Text = "load data" + Environment.NewLine;
             var loadAcc = new LoadAccount() { Path = this.Path };
-            acc = loadAcc.GetAccountList(Path + '/' + _blaster,Path + '/' + _base,Path);
+            acc = loadAcc.GetAccountList(Path + '/' + _blaster, Path + '/' + _base, Path);
 
             // we put all 
-            var allmail  = acc.Where(ex => ex.Email.Contains(".gmail.com")).ToList();
-        
-          
+            var allmail = acc.Where(ex => ex.Email.Contains(".gmail.com")).ToList();
+
+
             if (acc == null)
             {
                 MessageBox.Show("dont find gmail  password");
@@ -122,7 +129,7 @@ namespace EmailReseter
             dataGridView.Columns[2].Visible = false;
             dataGridView.Columns[3].Visible = false;
 
-            this.Text = acc.Count.ToString() + "_accounts " ;
+            this.Text = acc.Count.ToString() + "_accounts ";
             foreach (DataGridViewColumn column in dataGridView.Columns)
                 dataGridView.Columns[column.Name].SortMode = DataGridViewColumnSortMode.Automatic;
         }
@@ -130,13 +137,13 @@ namespace EmailReseter
         private void setPathToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (!Directory.Exists(pathTxt.Text.Trim()))
-                myCons.Text = Environment.NewLine + "Directory not exist pls check path"  ;
+                myCons.Text = Environment.NewLine + "Directory not exist pls check path";
             else
             {
                 this.Path = pathTxt.Text.Trim();
                 this._Init();
             }
-                
+
         }
         //private static PhantomJSDriverService _GetJsSettings()
         //{
@@ -148,18 +155,19 @@ namespace EmailReseter
         {
 
             count++;
-           // this.Text = count.ToString();
+            // this.Text = count.ToString();
 
             Account account = acc[x];
-            string pass = (new Settings().GetEmailPassword(account.Email) == null) 
+            string pass = (new Settings().GetEmailPassword(account.Email) == null)
                 ? account.EmailPassword : new Settings().GetEmailPassword(account.Email);
 
 
             var serverproto = (account.Email.Contains("@gmail.com")) ? ServerProtocol.Imap4 : ServerProtocol.Pop3;
-           
+
 
             MailServer oServer = new MailServer(new Settings().GetEmailHost(account.Email), account.Email, pass, serverproto);
             MailClient oClient = new MailClient("TryIt");
+           // oClient.LogFileName = "maillog.txt";
             // Please add the following codes:
             oServer.SSLConnection = true;
             oServer.Port = (account.Email.Contains("@gmail.com")) ? 993 : 995;
@@ -172,40 +180,8 @@ namespace EmailReseter
 
                 /////////////// here :) just read all 
 
-                int gmailCount = 25;
-                //List<Gmail> filteredList = null;
-                //if (account.Email.Contains("@gmail.com"))
-                //{
-                //    // 
-                //    string clearEmail = account.Email.Replace(".", "");
-                //    gmailCount = _gmails.Where(ee => ee.ClearEmail == clearEmail).Count();
-                   
+                int gmailCount = account.Email.Contains("gmail") ? 125 : 25;
 
-                //    if (gmailCount < 1)
-                //    {
-                //        for (int i = 0; i < infos.Length; i++)
-                //        {
-                //            MailInfo info = infos[i];
-                //            Mail oMail = oClient.GetMail(info);
-
-                //            _gmails.Add(new Gmail()
-                //            {
-                //                ClearEmail = clearEmail,
-                //                RealEmail = oMail.To[0].Address,
-                //                Body = oMail.HtmlBody,
-                //                Date = oMail.SentDate,
-                //                Header = oMail.Subject,
-                //                Eagtmail = oMail,
-                                
-                //            });
-                //        }
-                        
-                //    }
-
-
-                //   filteredList = _gmails.Where(ee => ee.RealEmail == account.Email).ToList();
-                //}
-                
 
                 for (int i = 0; i < gmailCount; i++)
                 {
@@ -214,9 +190,9 @@ namespace EmailReseter
 
                     MailInfo info = infos[i];
                     Mail oMail;
-            
-                   
-                        oMail = oClient.GetMail(info);
+
+
+                    oMail = oClient.GetMail(info);
 
 
                     if (oMail.HtmlBody.Contains("suspended your Pinterest"))
@@ -273,28 +249,31 @@ namespace EmailReseter
                     var subj = oMail.Subject;
                     var rep = oMail.To[0].Address;
 
-                    if (account.Email.Contains("@gmail.com"))
-                    {
-                        if (account.Email != rep)
-                        {
-                            continue;
-                        }
-                    }
+                    //if (account.Email.Contains("@gmail.com"))
+                    //{
+                    //    if (account.Email != rep)
+                    //    {
+                    //        continue;
+                    //    }
+                    //}
 
                     //false
                     if (oMail.From.Address.ToString().Contains("pinterest"))
                         resetEmailUrl = new GetLink().FindLink(oMail.HtmlBody);
-             
+
 
                     if (resetEmailUrl != null)
                     {
-                       TryReset(account, resetEmailUrl, rep);
+                        TryReset(account, resetEmailUrl, rep);
+                       
                     }
-                    
+
+                 
+
                 }
 
                 // Quit and pure emails marked as deleted from POP3 server.
-                oClient.Quit();
+
                 acc[x] = account;
                 dataGridView.Update();
                 dataGridView.Refresh();
@@ -302,21 +281,30 @@ namespace EmailReseter
             }
             catch (Exception ep)
             {
+
                 try
                 {
                     File.AppendAllText(this._res + System.IO.Path.DirectorySeparatorChar + "total_bad.txt", account.Email + ep.Message + Environment.NewLine);
                     account.Status = ep.Message;
                 }
                 catch { }
-                
-                
+
+
+            }
+            finally
+            {
+                try
+                {
+                    oClient.Quit();
+                }
+                catch { }
             }
 
 
 
         }
 
-        public Account Read( Account acc)
+        public Account Read(Account acc)
         {
 
             string pass = (new Settings().GetEmailPassword(acc.Email) == null) ? acc.EmailPassword : new Settings().GetEmailPassword(acc.Email);
@@ -327,8 +315,12 @@ namespace EmailReseter
             oServer.SSLConnection = true;
             oServer.Port = 995;
 
+            if (acc.Email.Contains("gmail"))
+            {
+                oServer.Port = 993;
+            }
 
-    
+
             acc.Time = DateTime.Now;
             try
             {
@@ -361,9 +353,9 @@ namespace EmailReseter
                     }
 
                     //false
-                     if (oMail.From.Address.ToString().Contains("pinterest.com"))
+                    if (oMail.From.Address.ToString().Contains("pinterest.com"))
                         resetEmailUrl = new GetLink().FindLink(oMail.HtmlBody);
-                  
+
 
                     if (resetEmailUrl != null)
                     {
@@ -392,7 +384,7 @@ namespace EmailReseter
 
         }
 
-       
+
         public string GetPassword()
         {
             string text = File.ReadAllText(this._res + '/' + this._num);
@@ -400,7 +392,7 @@ namespace EmailReseter
             Int32.TryParse(text, out num);
             num++;
             File.WriteAllText(this._res + '/' + this._num, num.ToString());
-            return num.ToString()+"trance";
+            return num.ToString() + "trance";
         }
         private string SetPassWordMinusOne()
         {
@@ -446,7 +438,7 @@ namespace EmailReseter
             SendEmail send = new SendEmail();
             send.Send(body);
 
-           
+
             Uploader.MakePost(this.acc);
             // udpate mongo 
 
@@ -471,7 +463,7 @@ namespace EmailReseter
         {
             try
             {
-                int i = e.RowIndex ;
+                int i = e.RowIndex;
                 myCons.Text = acc[i].Email + Environment.NewLine + myCons.Text;
                 Account temp = Read(acc[i]);
                 if (temp.PinPassword != acc[i].PinPassword)
@@ -479,7 +471,7 @@ namespace EmailReseter
                     acc[i] = temp;
                     dataGridView.Update();
                     dataGridView.Refresh();
-                    
+
                 }
                 this.Update();
             }
@@ -487,21 +479,21 @@ namespace EmailReseter
             {
                 myCons.Text = ex.Message;
             }
-           
+
         }
 
         private void updateGoodToolStripMenuItem_Click(object sender, EventArgs e)
         {
-           
-            string [] good = File.ReadAllLines(this.Path + @"/res/good.txt");
+
+            string[] good = File.ReadAllLines(this.Path + @"/res/good.txt");
             List<Account> goodAcc = new List<Account>();
-            foreach(string line in good)
+            foreach (string line in good)
             {
                 string[] lineArr = line.Split(':');
                 goodAcc.Add(new Account() { Email = lineArr[0], PinPassword = lineArr[1] });
             }
 
-            acc = new LoadAccount().GetAccountList(Path + '/' + _blaster, Path + '/' + _base ,Path);
+            acc = new LoadAccount().GetAccountList(Path + '/' + _blaster, Path + '/' + _base, Path);
             if (acc == null)
             {
                 MessageBox.Show("dont find gmail  password");
@@ -521,8 +513,8 @@ namespace EmailReseter
             }
 
             var x = acc;
-            
-           
+
+
             this.Update();
         }
 
@@ -538,7 +530,7 @@ namespace EmailReseter
 
             List<string> done = new List<string>();
 
-            foreach(var acc in allGmail)
+            foreach (var acc in allGmail)
             {
 
                 myCons.Text = acc.Email;
@@ -581,13 +573,13 @@ namespace EmailReseter
                             continue;
 
                         //false
-                        if (oMail.From.Address.ToString().Contains("pinterest") )
+                        if (oMail.From.Address.ToString().Contains("pinterest"))
                             resetEmailUrl = new GetLink().FindLink(oMail.HtmlBody);
-                      
+
 
                         if (resetEmailUrl != null)
                         {
-                            TryReset(acc, resetEmailUrl, rep , "missed.txt" );
+                            TryReset(acc, resetEmailUrl, rep, "missed.txt");
 
                             // yea we do reset here 
                         }
@@ -600,12 +592,12 @@ namespace EmailReseter
 
                     // Quit and pure emails marked as deleted from POP3 server.
                     oClient.Quit();
-                   
+
                 }
                 catch (Exception ep)
                 {
                     File.AppendAllText(this._res + System.IO.Path.DirectorySeparatorChar + "total_bad.txt", acc.Email + Environment.NewLine);
-                  
+
                 }
             }
             //naiti vse gmail
@@ -619,15 +611,15 @@ namespace EmailReseter
             service.SuppressInitialDiagnosticInformation = true;
             service.HideCommandPromptWindow = true;
             options.AddArgument("--log-level=3");
-            options.AddArgument("headless");
+          options.AddArgument("headless");
             RemoteWebDriver driver = new ChromeDriver(service, options);
             return driver;
 
         }
-            
 
 
-        private void TryReset(Account acc, string resetEmailUrl, string rep ,string fileName = "good.txt")
+
+        private void TryReset(Account acc, string resetEmailUrl, string rep, string fileName = "good.txt")
         {
             var driver = GetDriver();
             try
@@ -640,8 +632,15 @@ namespace EmailReseter
                 driver.FindElementByXPath("//button[@type='submit']").Click();
                 acc.PinPassword = tempPassword;
                 Thread.Sleep(7000);
-                Uploader.MakePost(this.acc);
+               // Uploader.MakePost(this.acc);
                 File.AppendAllText(this._res + '/' + fileName, rep + ':' + acc.PinPassword + Environment.NewLine);
+                if (acc.Email.Contains("@gmail.com"))
+                {
+                    if (acc.Email != rep)
+                    {
+                        this.acc.FirstOrDefault(x => x.Email == rep).PinPassword = tempPassword;
+                    }
+                }
             }
             catch (Exception ex)
             {
