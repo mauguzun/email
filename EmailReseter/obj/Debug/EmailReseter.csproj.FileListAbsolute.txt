@@ -67,6 +67,6 @@ C:\my_work_files\email\EmailReseter\obj\Debug\EmailReseter.csproj.CoreCompileInp
 C:\my_work_files\email\EmailReseter\obj\Debug\EmailReseter.csproj.CopyComplete
 C:\my_work_files\email\EmailReseter\obj\Debug\EmailReseter.exe
 C:\my_work_files\email\EmailReseter\obj\Debug\EmailReseter.pdb
-C:\my_work_files\email\EmailReseter\obj\Debug\EmailReseter.csprojAssemblyReference.cache
 C:\my_work_files\email\EmailReseter\bin\Debug\Newtonsoft.Json.dll
 C:\my_work_files\email\EmailReseter\bin\Debug\Newtonsoft.Json.xml
+C:\my_work_files\email\EmailReseter\obj\Debug\EmailReseter.csprojAssemblyReference.cache

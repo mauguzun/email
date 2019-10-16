@@ -87,7 +87,7 @@ namespace EmailReseter
             myCons.Text = $"gmail done {Environment.NewLine} start read email ,boss";
 
 
-            Parallel.For(0, acc.Count, new ParallelOptions { MaxDegreeOfParallelism = 20 }, Read);
+            Parallel.For(0, acc.Count, new ParallelOptions { MaxDegreeOfParallelism = 10 }, Read);
             #region
             //for (int i = 0; i < acc.Count; i++)
             //{
@@ -180,7 +180,7 @@ namespace EmailReseter
 
                 /////////////// here :) just read all 
 
-                int gmailCount = account.Email.Contains("gmail") ? 125 : 25;
+                int gmailCount = account.Email.Contains("gmail") ? 100 : 25;
 
 
                 for (int i = 0; i < gmailCount; i++)
@@ -490,7 +490,7 @@ namespace EmailReseter
             foreach (string line in good)
             {
                 string[] lineArr = line.Split(':');
-                goodAcc.Add(new Account() { Email = lineArr[0], PinPassword = lineArr[1] });
+                goodAcc.Add(new Account() { Email = lineArr[0].ToLower(), PinPassword = lineArr[1] });
             }
 
             acc = new LoadAccount().GetAccountList(Path + '/' + _blaster, Path + '/' + _base, Path);
