@@ -38,8 +38,8 @@ namespace EmailReseter
             Test();
             _Init();
 
-       
-            
+
+
 
         }
 
@@ -87,7 +87,7 @@ namespace EmailReseter
             myCons.Text = $"gmail done {Environment.NewLine} start read email ,boss";
 
 
-            Parallel.For(0, acc.Count, new ParallelOptions { MaxDegreeOfParallelism = 10 }, Read);
+            Parallel.For(0, acc.Count, new ParallelOptions { MaxDegreeOfParallelism =10 }, Read);
             #region
             //for (int i = 0; i < acc.Count; i++)
             //{
@@ -167,7 +167,7 @@ namespace EmailReseter
 
             MailServer oServer = new MailServer(new Settings().GetEmailHost(account.Email), account.Email, pass, serverproto);
             MailClient oClient = new MailClient("TryIt");
-           // oClient.LogFileName = "maillog.txt";
+            // oClient.LogFileName = "maillog.txt";
             // Please add the following codes:
             oServer.SSLConnection = true;
             oServer.Port = (account.Email.Contains("@gmail.com")) ? 993 : 995;
@@ -265,10 +265,10 @@ namespace EmailReseter
                     if (resetEmailUrl != null)
                     {
                         TryReset(account, resetEmailUrl, rep);
-                       
+
                     }
 
-                 
+
 
                 }
 
@@ -387,21 +387,9 @@ namespace EmailReseter
 
         public string GetPassword()
         {
-            string text = File.ReadAllText(this._res + '/' + this._num);
-            int num = 1;
-            Int32.TryParse(text, out num);
-            num++;
-            File.WriteAllText(this._res + '/' + this._num, num.ToString());
-            return num.ToString() + "trance";
-        }
-        private string SetPassWordMinusOne()
-        {
-            string text = File.ReadAllText(this._res + '/' + this._num);
-            int num = 1;
-            Int32.TryParse(text, out num);
-            num--;
-            File.WriteAllText(this._res + '/' + this._num, num.ToString());
-            return num.ToString() + "trance";
+            int rand = new Random().Next(10, 9999);
+            return rand + "trance";
+
         }
 
 
@@ -611,7 +599,7 @@ namespace EmailReseter
             service.SuppressInitialDiagnosticInformation = true;
             service.HideCommandPromptWindow = true;
             options.AddArgument("--log-level=3");
-          options.AddArgument("headless");
+            options.AddArgument("headless");
             RemoteWebDriver driver = new ChromeDriver(service, options);
             return driver;
 
@@ -632,7 +620,7 @@ namespace EmailReseter
                 driver.FindElementByXPath("//button[@type='submit']").Click();
                 acc.PinPassword = tempPassword;
                 Thread.Sleep(7000);
-               // Uploader.MakePost(this.acc);
+                // Uploader.MakePost(this.acc);
                 File.AppendAllText(this._res + '/' + fileName, rep + ':' + acc.PinPassword + Environment.NewLine);
                 if (acc.Email.Contains("@gmail.com"))
                 {
@@ -644,7 +632,7 @@ namespace EmailReseter
             }
             catch (Exception ex)
             {
-                SetPassWordMinusOne();
+              
             }
             finally
             {
