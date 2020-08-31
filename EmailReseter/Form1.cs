@@ -35,11 +35,8 @@ namespace EmailReseter
         public Form1()
         {
             InitializeComponent();
-            Test();
+          // Test();
             _Init();
-
-
-
 
         }
 
@@ -48,19 +45,11 @@ namespace EmailReseter
         {
             try
             {
-                //ChromeOptions options = new ChromeOptions();
-                //ChromeDriverService service = ChromeDriverService.CreateDefaultService();
-                //service.SuppressInitialDiagnosticInformation = true;
-                //service.HideCommandPromptWindow = true;
-                //options.AddArgument("--log-level=3");
-                //options.AddArgument("headless");
-                //RemoteWebDriver driver = new ChromeDriver(service, options);
-
-                //driver.Quit();
+                var driver = GetDriver();
             }
-            catch
+            catch(Exception ex)
             {
-                MessageBox.Show("cant make driver");
+                MessageBox.Show("cant make driver" + ex);
             }
 
         }
@@ -87,7 +76,7 @@ namespace EmailReseter
             myCons.Text = $"gmail done {Environment.NewLine} start read email ,boss";
 
 
-            Parallel.For(0, acc.Count, new ParallelOptions { MaxDegreeOfParallelism =10 }, Read);
+            Parallel.For(0, acc.Count, new ParallelOptions { MaxDegreeOfParallelism =2 }, Read);
             #region
             //for (int i = 0; i < acc.Count; i++)
             //{
@@ -599,7 +588,9 @@ namespace EmailReseter
             service.SuppressInitialDiagnosticInformation = true;
             service.HideCommandPromptWindow = true;
             options.AddArgument("--log-level=3");
-            options.AddArgument("headless");
+           options.AddArgument("headless");
+            var user_agent = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.50 Safari/537.36";
+            options.AddArgument($"--user-agent={user_agent}"); // disabling infobars
             RemoteWebDriver driver = new ChromeDriver(service, options);
             return driver;
 
